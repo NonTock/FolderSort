@@ -18,7 +18,7 @@ def start():
     print("Не сортируй системные файлы, это может вызвать ошибки")
     print("Отправь ссылку на сортируемую папку в формате: 'C:/users/userName/Downloads'")
     uri = input("URI: ")
-    while Path(uri).exists() == False:
+    while Path(uri).is_dir() == False:
         print("Не корректная ссылка")
         uri = input("URI: ")
 start()

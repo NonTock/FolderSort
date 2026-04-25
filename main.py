@@ -8,6 +8,7 @@ sys_msg = Fore.CYAN+Style.BRIGHT
 gr_msg = Fore.YELLOW+Style.BRIGHT
 suc_msg = Fore.LIGHTGREEN_EX+Style.BRIGHT
 bd_msg = Fore.LIGHTRED_EX+Style.BRIGHT
+
 sort_checker = {
     "Images": [".jpg", ".jpeg", ".png", ".gif"],
     "Documents": [".pdf", ".doc", ".docx", ".odt", ".txt", ".xlsx"],
@@ -39,6 +40,11 @@ def choose():
     else:
         input("Нажмите Enter чтобы выйти")
 
+def category(suf):
+    for key, value in sort_checker.items():
+        if suf in value:
+            return(key)
+    return("Others")
 def take_uri():
     print(sys_msg + "Отправь путь на сортируемую папку в формате: 'C:/users/username/Downloads'")
     uri = input("Путь: ")
@@ -57,51 +63,44 @@ def available_check(file):
 def sorted_list(uri):
     uri = Path(uri)
     files_uri = uri.iterdir()
+    files = 0
     for file in files_uri:
         if file.is_file():
-            available_check(file.suffix)
-            for key in sort_checker:
-                flag = 0
-                for value in sort_checker[key]:
-                    if value == file.suffix:
-                        print(gr_msg + f"{file.name} - {key}")
-                        flag = 1
-                        sleep(0.2)
-                        break
-                    if flag != 0:
-                        break
-    print(sys_msg + "Начать сортировку?")
-    if choose():
-        file_sort(uri)
+            files += 1
+            # available_check(file.suffix)
+            print(gr_msg + f"{file.name} - {category(file.suffix)}")
+    if files != 0:
+        print(sys_msg + "Начать сортировку?")
+        if choose():
+            file_sort(uri)
+    else:
+        print(bd_msg + "Нет сортируемых файлов")
+        print(sys_msg + "Желаете поменять сортируемую директорию?")
+        if choose():
+            take_uri()
 
 def file_sort(uri):
     dir_count = 0
     file_count = 0
     for file in uri.iterdir():
-        for key in sort_checker:
-            for value in sort_checker[key]:
-                if file.suffix == value:
-                    old_file = uri / file.name
-                    new_dir = uri / key
-                    new_file = new_dir / file.name
-                    if new_dir.exists() == False:
-                        print(bd_msg + f"Директории {key} не существует")
-                        sleep(0.2)
-                        print(suc_msg + "Создание директории")
-                        sleep(0.2)
-                        new_dir.mkdir()
-                        dir_count += 1
-
-                    while new_file.exists():
-                        print(bd_msg + f"Файл {file.name} уже существует в директории {key}")
-                        sleep(0.4)
-                        print(sys_msg + f"Не забывайте про суффикс. Пример: 'Букварь.txt'")
-                        new_file_name = input("Введите новое имя файла: ")
-                        new_file = new_dir / new_file_name
-                    old_file.rename(new_file)
-                    print(suc_msg + f"{new_file.name} успешно перемещен")
-                    sleep(0.2)
-                    file_count += 1
+        if file.is_file():
+            key = category(file.suffix)
+            old_file = uri / file.name
+            new_dir = uri / key
+            new_file = new_dir / file.name
+            if not new_dir.exists():
+                print(bd_msg + f"Директории {key} не существует")
+                print(suc_msg + "Создание директории")
+                new_dir.mkdir()
+                dir_count += 1
+            while new_file.exists():
+                print(bd_msg + f"Файл {file.name} уже существует в директории {key}")
+                print(sys_msg + f"Не забывайте про суффикс. Пример: 'Букварь.txt'")
+                new_file_name = input("Введите новое имя файла: ")
+                new_file = new_dir / new_file_name
+            old_file.rename(new_file)
+        print(suc_msg + f"{new_file.name} успешно перемещен")
+        file_count += 1
     print(sys_msg + f"Успешно создано {dir_count} директорий")
     print(sys_msg + f"Успешно отсортировано {file_count} файлов")
     print("Желаете ещё раз ")

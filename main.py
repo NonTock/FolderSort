@@ -53,13 +53,6 @@ def take_uri():
         uri = input("Путь: ")
     sorted_list(uri)
 
-def available_check(file):
-    for value in sort_checker.values():
-        if file in value:
-            break
-    else:
-        sort_checker["Others"].append(file)
-
 def sorted_list(uri):
     uri = Path(uri)
     files_uri = uri.iterdir()
@@ -67,7 +60,6 @@ def sorted_list(uri):
     for file in files_uri:
         if file.is_file():
             files += 1
-            # available_check(file.suffix)
             print(gr_msg + f"{file.name} - {category(file.suffix)}")
     if files != 0:
         print(sys_msg + "Начать сортировку?")

@@ -83,7 +83,6 @@ def file_sort(uri):
     dir_count = 0
     file_count = 0
     for file in tqdm(uri.iterdir()):
-        sleep(1)
         if file.is_file():
             key = category(file.suffix)
             old_file = uri / file.name

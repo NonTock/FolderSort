@@ -103,7 +103,7 @@ def file_sort(uri):
         file_count += 1
     print(sys_msg + f"Успешно создано {dir_count} директорий")
     print(sys_msg + f"Успешно отсортировано {file_count} файлов")
-    print("Желаете ещё раз ")
+    print(sys_msg + "Желаете выбрать новую директорию для сортировки?")
     if choose():
         take_uri()
 start()

@@ -17,16 +17,16 @@
 ## Установка и запуск
 
 1. Склонируйте репозиторий на свой компьютер:
-   git clone https://github.com/NonTock/FolderSort.git
+   `git clone https://github.com/NonTock/FolderSort.git`
 
 2. Перейдите в папку с проектом:
-   cd FolderSort
+   `cd FolderSort`
 
 3. Установите необходимые зависимости из файла requirements.txt:
-   pip install -r requirements.txt
+   `pip install -r requirements.txt`
 
 4. Запустите скрипт:
-   python main.py
+   `python main.py`
 
 ## Как пользоваться
 1. При запуске скрипт спросит, хотите ли вы начать работу. Введите `1`.

@@ -1,6 +1,7 @@
 from pathlib import Path
 from colorama import Fore, Style, init
 from time import sleep
+from tqdm import tqdm
 
 init(autoreset=True)
 
@@ -19,7 +20,6 @@ sort_checker = {
     "Programming": [".py"],
     "Others": [".a"],
 }
-
 def start():
     print(sys_msg + "Это сортировщик файлов в папке")
     sleep(1)
@@ -82,15 +82,14 @@ def sorted_list(uri):
 def file_sort(uri):
     dir_count = 0
     file_count = 0
-    for file in uri.iterdir():
+    for file in tqdm(uri.iterdir()):
+        sleep(1)
         if file.is_file():
             key = category(file.suffix)
             old_file = uri / file.name
             new_dir = uri / key
             new_file = new_dir / file.name
             if not new_dir.exists():
-                print(bd_msg + f"Директории {key} не существует")
-                print(suc_msg + "Создание директории")
                 new_dir.mkdir()
                 dir_count += 1
             while new_file.exists():
@@ -99,8 +98,7 @@ def file_sort(uri):
                 new_file_name = input("Введите новое имя файла: ")
                 new_file = new_dir / new_file_name
             old_file.rename(new_file)
-        print(suc_msg + f"{new_file.name} успешно перемещен")
-        file_count += 1
+            file_count += 1
     print(sys_msg + f"Успешно создано {dir_count} директорий")
     print(sys_msg + f"Успешно отсортировано {file_count} файлов")
     print(sys_msg + "Желаете выбрать новую директорию для сортировки?")
